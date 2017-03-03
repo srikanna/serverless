@@ -49,4 +49,4 @@ Outputs:
         - !Ref ApiGatewayApi
         - '.execute-api.'
         - !Ref 'AWS::Region'
-        - '.amazonaws.com/Prod
+        - '.amazonaws.com/Prod'
