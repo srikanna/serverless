@@ -67,7 +67,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
       security:
-      - spacefinder-custom-authorizer: []
+      - spacefinder-userPool-authorizer: []
     get:
       description: Returns a Location
       # used as the method name of the controller
@@ -123,7 +123,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
       security:
-      - spacefinder-custom-authorizer: []
+      - spacefinder-userPool-authorizer: []
 
   /locations/{locationId}/resources/{resourceId}:
     get:
@@ -159,7 +159,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
       security:
-      - spacefinder-custom-authorizer: []
+      - spacefinder-userPool-authorizer: []
 
   /locations/{locationId}/resources/{resourceId}/bookings:
     get:
@@ -386,7 +386,7 @@ definitions:
       type:
         type: string
 securityDefinitions:
-  spacefinder-custom-authorizer:
+  spacefinder-userPool-authorizer:
     type: "apiKey"
     name: "Authorization"
     in: "header"
@@ -396,6 +396,10 @@ securityDefinitions:
     name: "Authorization"
     in: "header"
     x-amazon-apigateway-authtype: "cognito_user_pools"
+    x-amazon-apigateway-authorizer':
+      providerARNs:
+      - "arn:aws:cognito-idp:us-east-2:691844857431:userpool/us-east-2_z9eXy7BrY"
+      type: "cognito_user_pools"
   sigv4:
     type: "apiKey"
     name: "Authorization"
