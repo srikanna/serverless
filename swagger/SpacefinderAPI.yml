@@ -386,7 +386,7 @@ definitions:
       type:
         type: string
 securityDefinitions:
-  spacefinder-userPool-authorizer:
+  spacefinder-custom-authorizer:
     type: "apiKey"
     name: "Authorization"
     in: "header"
