@@ -20,7 +20,7 @@ Resources:
     Properties:
       Handler: locations.Get
       Runtime: nodejs4.3
-      CodeUri: ./spacefinderFn/
+      CodeUri: ./spacefinderfn/
       Events:
         SpacefinderAPI:
           Type: Api
