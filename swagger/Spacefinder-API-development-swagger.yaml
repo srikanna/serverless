@@ -1,490 +1,402 @@
----
 swagger: "2.0"
 info:
   version: "1.0.0"
-  title: "Spacefinder-API"
-host: "p56srs6og3.execute-api.us-east-1.amazonaws.com"
-basePath: "/development"
+  title: Spacefinder-API
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths
+basePath: /
+#
 schemes:
-- "https"
+  # tip: remove http to make production-grade
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
 paths:
   /locations:
     get:
-      description: "Returns List of 'Locations'"
-      operationId: "locations-List"
-      produces:
-      - "application/json"
+      description: Returns List of 'Locations'
+      # used as the method name of the controller
+      operationId: locations-List
       responses:
-        200:
-          description: "Success"
+        "200":
+          description: Success
           schema:
             $ref: "#/definitions/LocationsListResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
       security:
       - spacefinder-userPool-authorizer: []
     post:
-      description: "Adds a Location"
-      operationId: "locations-Create"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
+      description: Adds a Location
+      operationId: locations-Create
       parameters:
-      - in: "body"
-        name: "Location"
-        required: true
-        schema:
-          $ref: "#/definitions/Location"
+      - $ref: "#/parameters/Location"
       responses:
-        200:
-          description: "Success"
+        "200":
+          description: Success
           schema:
             $ref: "#/definitions/Location"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
       security:
       - sigv4: []
-    options:
-      consumes:
-      - "application/json"
-      responses:
-        200:
-          description: "200 response"
-          headers:
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
+
   /locations/{locationId}:
-    get:
-      description: "Returns a Location"
-      operationId: "locations-Get"
-      produces:
-      - "application/json"
+    delete:
+      description: Deletes a Location
+      operationId: locations-Delete
       parameters:
-      - name: "locationId"
-        in: "path"
-        required: true
-        type: "string"
+      - $ref: "#/parameters/LocationId"
       responses:
-        200:
-          description: "Success"
+        "200":
+          description: Success
+        # responses may fall through to errors
+        default:
+          description: Error
           schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - spacefinder-userPool-authorizer: []
+    get:
+      description: Returns a Location
+      # used as the method name of the controller
+      operationId: locations-Get
+      parameters:
+      - $ref: "#/parameters/LocationId"
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
             $ref: "#/definitions/Location"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
       security:
       - sigv4: []
-    delete:
-      description: "Deletes a Location"
-      operationId: "locations-Delete"
-      parameters:
-      - name: "locationId"
-        in: "path"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "Success"
-      security:
-      - spacefinder-custom-authorizer: []
-    options:
-      consumes:
-      - "application/json"
-      parameters:
-      - name: "locationId"
-        in: "path"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "200 response"
-          headers:
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
+
   /locations/{locationId}/resources:
     get:
-      description: "Returns list of 'Resources'"
-      operationId: "resources-List"
-      produces:
-      - "application/json"
+      description: Returns list of 'Resources'
+      operationId: resources-List
       parameters:
-      - name: "locationId"
-        in: "path"
-        required: true
-        type: "string"
+      - $ref: "#/parameters/LocationId"
       responses:
-        200:
-          description: "Success"
+        "200":
+          description: Success
           schema:
             $ref: "#/definitions/ResourcesListResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
       security:
       - sigv4: []
     post:
-      description: "Add Resource"
-      operationId: "resources-Create"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
+      description: Add Resource
+      operationId: resources-Create
       parameters:
-      - name: "locationId"
-        in: "path"
-        required: true
-        type: "string"
-      - in: "body"
-        name: "Resource"
-        required: true
-        schema:
-          $ref: "#/definitions/Resource"
+      - $ref: "#/parameters/LocationId"
+      - $ref: "#/parameters/Resource"
       responses:
-        200:
-          description: "Success"
+        "200":
+          description: Success
           schema:
             $ref: "#/definitions/Resource"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
       security:
-      - spacefinder-custom-authorizer: []
-    options:
-      consumes:
-      - "application/json"
-      parameters:
-      - name: "locationId"
-        in: "path"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "200 response"
-          headers:
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
+      - spacefinder-userPool-authorizer: []
+
   /locations/{locationId}/resources/{resourceId}:
     get:
-      description: "Get resource"
-      operationId: "resources-Get"
-      produces:
-      - "application/json"
+      description: Get resource
+      operationId: resources-Get
       parameters:
-      - name: "locationId"
-        in: "path"
-        required: true
-        type: "string"
-      - name: "resourceId"
-        in: "path"
-        required: true
-        type: "string"
+      - $ref: "#/parameters/LocationId"
+      - $ref: "#/parameters/ResourceId"
       responses:
-        200:
-          description: "Success"
+        "200":
+          description: Success
           schema:
             $ref: "#/definitions/Resource"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
       security:
       - sigv4: []
     delete:
-      description: "Deletes a Resource"
-      operationId: "resources-Delete"
+      description: Deletes a Resource
+      operationId: resources-Delete
       parameters:
-      - name: "locationId"
-        in: "path"
-        required: true
-        type: "string"
-      - name: "resourceId"
-        in: "path"
-        required: true
-        type: "string"
+      - $ref: "#/parameters/LocationId"
+      - $ref: "#/parameters/ResourceId"
       responses:
-        200:
-          description: "Success"
+        "200":
+          description: Success
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
       security:
-      - spacefinder-custom-authorizer: []
-    options:
-      consumes:
-      - "application/json"
-      parameters:
-      - name: "locationId"
-        in: "path"
-        required: true
-        type: "string"
-      - name: "resourceId"
-        in: "path"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "200 response"
-          headers:
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
+      - spacefinder-userPool-authorizer: []
+
   /locations/{locationId}/resources/{resourceId}/bookings:
     get:
-      description: "Returns List of Bookings associated with Resource"
-      operationId: "bookings-ListByResourceId"
-      produces:
-      - "application/json"
+      description: Returns List of Bookings associated with Resource
+      operationId: bookings-ListByResourceId
       parameters:
-      - name: "locationId"
-        in: "path"
-        required: true
-        type: "string"
-      - name: "resourceId"
-        in: "path"
-        required: true
-        type: "string"
+      - $ref: "#/parameters/LocationId"
+      - $ref: "#/parameters/ResourceId"
       responses:
-        200:
-          description: "Success"
+        "200":
+          description: Success
           schema:
             $ref: "#/definitions/BookingsListResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
       security:
       - sigv4: []
-    options:
-      consumes:
-      - "application/json"
-      parameters:
-      - name: "locationId"
-        in: "path"
-        required: true
-        type: "string"
-      - name: "resourceId"
-        in: "path"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "200 response"
-          headers:
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-  /users/{userId}/bookings:
+
+  /users/{userId}/bookings/:
     get:
-      description: "Returns List of Bookings associated with a User"
-      operationId: "bookings-ListByUserId"
-      produces:
-      - "application/json"
+      description: Returns List of Bookings associated with a User
+      operationId: bookings-ListByUserId
       parameters:
-      - name: "userId"
-        in: "path"
-        required: true
-        type: "string"
+      - $ref: "#/parameters/UserId"
       responses:
-        200:
-          description: "Success"
+        "200":
+          description: Success
           schema:
             $ref: "#/definitions/BookingsListResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
       security:
       - sigv4: []
     post:
-      description: "Add Booking"
-      operationId: "bookings-Create"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
+      description: Add Booking
+      operationId: bookings-Create
       parameters:
-      - name: "userId"
-        in: "path"
-        required: true
-        type: "string"
-      - in: "body"
-        name: "Booking"
-        required: true
-        schema:
-          $ref: "#/definitions/Booking"
+      - $ref: "#/parameters/UserId"
+      - $ref: "#/parameters/Booking"
       responses:
-        200:
-          description: "Success"
+        "200":
+          description: Success
           schema:
             $ref: "#/definitions/Booking"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
       security:
       - sigv4: []
-    options:
-      consumes:
-      - "application/json"
-      parameters:
-      - name: "userId"
-        in: "path"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "200 response"
-          headers:
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
+
   /users/{userId}/bookings/{bookingId}:
     get:
-      description: "Get booking"
-      operationId: "bookings-Get"
-      produces:
-      - "application/json"
+      description: Get booking
+      operationId: bookings-Get
       parameters:
-      - name: "userId"
-        in: "path"
-        required: true
-        type: "string"
-      - name: "bookingId"
-        in: "path"
-        required: true
-        type: "string"
+      - $ref: "#/parameters/UserId"
+      - $ref: "#/parameters/BookingId"
       responses:
-        200:
-          description: "Success"
+        "200":
+          description: Success
           schema:
             $ref: "#/definitions/Booking"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
       security:
       - sigv4: []
     delete:
-      description: "Delete booking"
-      operationId: "bookings-Delete"
+      description: Delete booking
+      operationId: bookings-Delete
       parameters:
-      - name: "userId"
-        in: "path"
-        required: true
-        type: "string"
-      - name: "bookingId"
-        in: "path"
-        required: true
-        type: "string"
+      - $ref: "#/parameters/UserId"
+      - $ref: "#/parameters/BookingId"
       responses:
-        200:
-          description: "Success"
+        "200":
+          description: Success
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
       security:
       - sigv4: []
-    options:
-      consumes:
-      - "application/json"
-      parameters:
-      - name: "userId"
-        in: "path"
-        required: true
-        type: "string"
-      - name: "bookingId"
-        in: "path"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "200 response"
-          headers:
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
+parameters:
+  Location:
+    in: "body"
+    name: "body"
+    required: true
+    schema:
+      $ref: "#/definitions/Location"
+  LocationId:
+    in: "path"
+    name: "locationId"
+    required: true
+    type: string
+  Resource:
+    in: "body"
+    name: "body"
+    required: true
+    schema:
+      $ref: "#/definitions/Resource"
+  ResourceId:
+    in: "path"
+    name: "resourceId"
+    required: true
+    type: string
+  UserId:
+    in: "path"
+    name: "userId"
+    required: true
+    type: string
+  BookingId:
+    in: "path"
+    name: "bookingId"
+    required: true
+    type: string
+  Booking:
+    in: "body"
+    name: "body"
+    required: true
+    schema:
+      $ref: "#/definitions/Booking"
+# complex objects have schema definitions
+definitions:
+  LocationsListResponse:
+    required:
+    - items
+    properties:
+      items:
+        type: array
+        items:
+          $ref: "#/definitions/Location"
+  Location:
+    required:
+    - name
+    properties:
+      locationId:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      imageUrl:
+        type: string
+  ResourcesListResponse:
+    required:
+    - items
+    properties:
+      items:
+        type: array
+        items:
+          $ref: "#/definitions/Resource"
+  Resource:
+    required:
+    - name
+    properties:
+      resourceId:
+        type: string
+      locationId:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+  BookingsListResponse:
+    required:
+    - items
+    properties:
+      items:
+        type: array
+        items:
+          $ref: "#/definitions/Booking"
+  Booking:
+    required:
+    - locationId
+    - resourceId
+    - userId
+    properties:
+      bookingId:
+        type: string
+      locationId:
+        type: string
+      locationName:
+        type: string
+      resourceId:
+        type: string
+      userId:
+        type: string
+      userFirstName:
+        type: string
+      userLastName:
+        type: string
+      resourceName:
+        type: string
+      resourceDescription:
+        type: string
+      timeslot:
+        type: string
+      startTimeIsoTimestamp:
+        type: string
+      startTimeEpochTime:
+        type: number
+      endTimeIsoTimestamp:
+        type: string
+      endTimeEpochTime:
+        type: number
+  ErrorResponse:
+    required:
+      - message
+      - type
+    properties:
+      message:
+        type: string
+      type:
+        type: string
 securityDefinitions:
-  spacefinder-custom-authorizer:
-    type: "apiKey"
-    name: "Authorization"
-    in: "header"
-    x-amazon-apigateway-authtype: "custom"
   spacefinder-userPool-authorizer:
     type: "apiKey"
     name: "Authorization"
     in: "header"
     x-amazon-apigateway-authtype: "cognito_user_pools"
+    x-amazon-apigateway-authorizer':
+      providerARNs:
+      - "arn:aws:cognito-idp:us-east-2:691844857431:userpool/us-east-2_z9eXy7BrY"
+      type: "cognito_user_pools"
   sigv4:
     type: "apiKey"
     name: "Authorization"
     in: "header"
     x-amazon-apigateway-authtype: "awsSigv4"
-definitions:
-  BookingsListResponse:
-    required:
-    - "items"
-    properties:
-      items:
-        type: "array"
-        items:
-          $ref: "#/definitions/Booking"
-  Resource:
-    required:
-    - "name"
-    properties:
-      resourceId:
-        type: "string"
-      locationId:
-        type: "string"
-      name:
-        type: "string"
-      description:
-        type: "string"
-  ResourcesListResponse:
-    required:
-    - "items"
-    properties:
-      items:
-        type: "array"
-        items:
-          $ref: "#/definitions/Resource"
-  Booking:
-    required:
-    - "locationId"
-    - "resourceId"
-    - "userId"
-    properties:
-      bookingId:
-        type: "string"
-      locationId:
-        type: "string"
-      locationName:
-        type: "string"
-      resourceId:
-        type: "string"
-      userId:
-        type: "string"
-      userFirstName:
-        type: "string"
-      userLastName:
-        type: "string"
-      resourceName:
-        type: "string"
-      resourceDescription:
-        type: "string"
-      timeslot:
-        type: "string"
-      startTimeIsoTimestamp:
-        type: "string"
-      startTimeEpochTime:
-        type: "number"
-      endTimeIsoTimestamp:
-        type: "string"
-      endTimeEpochTime:
-        type: "number"
-  LocationsListResponse:
-    required:
-    - "items"
-    properties:
-      items:
-        type: "array"
-        items:
-          $ref: "#/definitions/Location"
-  Location:
-    required:
-    - "name"
-    properties:
-      locationId:
-        type: "string"
-      name:
-        type: "string"
-      description:
-        type: "string"
-      imageUrl:
-        type: "string"

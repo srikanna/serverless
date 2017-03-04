@@ -15,20 +15,32 @@ Resources:
             Path: /TimeResource
             Method: GET
 
-  SpacefinderFn:
+  locationsfn:
     Type: AWS::Serverless::Function
     Properties:
       Handler: locations.Get
       Runtime: nodejs4.3
       CodeUri: ./spacefinderfn/
       Events:
-        SpacefinderAPI:
+        GetLocations:
           Type: Api
           Properties:
             RestApiId: !Ref ApiGatewayApi
             Path: /locations
-            Method: Get
-
+            Method: GET
+  locationscreatefn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: locations.Create
+      Runtime: nodejs4.3
+      CodeUri: ./spacefinderfn/
+      Events:
+        PostLocations:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /locations
+            Method: POST
 
   ApiGatewayApi:
     Type: AWS::Serverless::Api
