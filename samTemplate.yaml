@@ -47,6 +47,9 @@ Resources:
     Properties:
         DefinitionUri: ./swagger/SpacefinderAPI.yml
         StageName: Prod
+        Variables:
+          LocationsFn: !Ref locationsfn
+          LocationsCreateFn: !Ref locationscreatefn
 
 Outputs:
   ApiUrl:

@@ -35,7 +35,7 @@ paths:
       security:
       - spacefinder-userPool-authorizer: []
       x-amazon-apigateway-integration:
-        uri: "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-2:691844857431:function:${stageVariables.locationsfn}/invocations"
+        uri: "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-2:691844857431:function:${stageVariables.LocationsFn}/invocations"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "aws_proxy"      
@@ -57,7 +57,7 @@ paths:
       security:
       - sigv4: []
       x-amazon-apigateway-integration:
-        uri: "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-2:691844857431:function:${stageVariables.locationscreatefn}/invocations"
+        uri: "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-2:691844857431:function:${stageVariables.LocationsCreateFn}/invocations"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "aws_proxy"
@@ -223,6 +223,7 @@ securityDefinitions:
     type: "apiKey"
     name: "Authorization"
     in: "header"
+    x-amazon-apigateway-authtype: "cognito_user_pools"
     x-amazon-apigateway-authorizer':
       providerARNs:
       - "arn:aws:cognito-idp:us-east-2:691844857431:userpool/us-east-2_z9eXy7BrY"
