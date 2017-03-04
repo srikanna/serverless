@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: "1.0.0"
-  title: Spacefinder-API-2
+  title: Spacefinder-API
 # during dev, should point to your local machine
 host: localhost:10010
 # basePath prefixes all resource paths
@@ -27,13 +27,8 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/LocationsListResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
       security:
-      - spacefinder-userPool-authorizer: []
+      - Test-CUP: []
       x-amazon-apigateway-integration:
         uri: "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-2:691844857431:function:function:serveless-us-east-2-locationsfn-MJE5YPEA888E/invocations"
         passthroughBehavior: "when_no_match"
@@ -49,11 +44,6 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/Location"
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
       security:
       - sigv4: []
       x-amazon-apigateway-integration:
@@ -219,12 +209,12 @@ definitions:
       type:
         type: string
 securityDefinitions:
-  spacefinder-userPool-authorizer:
+  Test-CUP:
     type: "apiKey"
     name: "Authorization"
     in: "header"
     x-amazon-apigateway-authtype: "cognito_user_pools"
-    x-amazon-apigateway-authorizer':
+    x-amazon-apigateway-authorizer:
       providerARNs:
       - "arn:aws:cognito-idp:us-east-2:691844857431:userpool/us-east-2_z9eXy7BrY"
       type: "cognito_user_pools"

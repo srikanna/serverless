@@ -45,7 +45,7 @@ Resources:
   ApiGatewayApi:
     Type: AWS::Serverless::Api
     Properties:
-        DefinitionUri: ./swagger/SpacefinderAPI.yml
+        DefinitionUri: ./swagger/SpacefinderAPI.yaml
         StageName: Prod
         Variables:
           LocationsFn: !Ref locationsfn
