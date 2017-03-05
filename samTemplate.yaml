@@ -41,7 +41,32 @@ Resources:
             RestApiId: !Ref ApiGatewayApi
             Path: /locations
             Method: POST
-
+  locationsgetfn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: locations.Get
+      Runtime: nodejs4.3
+      CodeUri: ./spacefinderfn/
+      Events:
+        PostLocations:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /locations/{locationId}
+            Method: GET
+  locationsdeletefn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: locations.Delete
+      Runtime: nodejs4.3
+      CodeUri: ./spacefinderfn/
+      Events:
+        PostLocations:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /locations/{locationId}
+            Method: POST  
   ApiGatewayApi:
     Type: AWS::Serverless::Api
     Properties:
@@ -50,6 +75,8 @@ Resources:
         Variables:
           LocationsFn: !Ref locationsfn
           LocationsCreateFn: !Ref locationscreatefn
+          LocationsGetFn: !Ref locationsgetfn
+          LocationsDeleteFn: !Ref locationsgdeletefn
 
 Outputs:
   ApiUrl:
