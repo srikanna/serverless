@@ -72,11 +72,11 @@ Resources:
     Properties:
         DefinitionUri: ./swagger/SpacefinderAPI.yaml
         StageName: prod
-        #Variables:
-        #  LocationsFn: !Ref locationsfn
-        #  LocationsCreateFn: !Ref locationscreatefn
-          #LocationsGetFn: !Ref locationsgetfn
-          #LocationsDeleteFn: !Ref locationsgdeletefn
+        Variables:
+          LocationsFn: !Ref locationsfn
+          LocationsCreateFn: !Ref locationscreatefn
+          LocationsGetFn: !Ref locationsgetfn
+          LocationsDeleteFn: !Ref locationsgdeletefn
 
 Outputs:
   ApiUrl:
