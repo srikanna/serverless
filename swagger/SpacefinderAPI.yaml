@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: "1.0.0"
-  title: Spacefinder-API-1
+  title: Spacefinder-API-Console
 # during dev, should point to your local machine
 host: localhost:10010
 # basePath prefixes all resource paths
@@ -30,7 +30,7 @@ paths:
       security:
       - Test-CUP: []
       x-amazon-apigateway-integration:
-        uri: "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-2:691844857431:function:function:serveless-us-east-2-locationsfn-MJE5YPEA888E/invocations"
+        uri: "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-2:691844857431:function:${stageVariables.LocationsFn}/invocations"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "aws_proxy"      
@@ -47,7 +47,7 @@ paths:
       security:
       - sigv4: []
       x-amazon-apigateway-integration:
-        uri: "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-2:691844857431:function:serveless-us-east-2-locationscreatefn-1ATYVBCDKOQW2/invocations"
+        uri: "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-2:691844857431:function:${stageVariables.LocationsCreateFn}/invocations"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "aws_proxy"
@@ -88,7 +88,7 @@ paths:
       security:
       - Test-CUP: []
       x-amazon-apigateway-integration:
-        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:691844857431:function:${stageVariables.LocationsDeleteFn}/invocations"
+        uri: "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-2:691844857431:function:${stageVariables.LocationsDeleteFn}/invocations"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "aws_proxy"
@@ -107,7 +107,7 @@ paths:
       security:
       - sigv4: []
       x-amazon-apigateway-integration:
-        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:691844857431:function:${stageVariables.LocationsGetFn}/invocations"
+        uri: "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-2:691844857431:function:${stageVariables.LocationsGetFn}/invocations"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "aws_proxy"
