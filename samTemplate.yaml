@@ -18,7 +18,7 @@ Resources:
   locationsfn:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: locations.Get
+      Handler: locations.List
       Runtime: nodejs4.3
       CodeUri: ./spacefinderfn/
       Events:
@@ -74,9 +74,9 @@ Resources:
         StageName: prod
         Variables:
           LocationsFn: !Ref locationsfn
-          LocationsCreateFn: !Ref locationscreatefn
-          LocationsGetFn: !Ref locationsgetfn
-          LocationsDeleteFn: !Ref locationsgdeletefn
+          #LocationsCreateFn: !Ref locationscreatefn
+          #LocationsGetFn: !Ref locationsgetfn
+          #LocationsDeleteFn: !Ref locationsgdeletefn
 
 Outputs:
   ApiUrl:
